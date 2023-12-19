@@ -1,5 +1,6 @@
 import amqp from "amqplib";
 
+
 const CONFIG = {
     url: process.env.ZAP_RABBIT_MQ_URL as string,
     exchangeName: process.env.ZAP_EVENT_EXCHANGE_NAME,
