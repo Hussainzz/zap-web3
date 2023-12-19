@@ -1,7 +1,7 @@
 import { getPrismaClient } from "@zapweb3/prisma";
 import { User, getServerSession } from "next-auth";
 import { NextResponse, type NextRequest } from "next/server";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "auth";
 import { UserZapFlowEvent, UserZapEventFlowResponse } from "@zap/recoil";
 
 export async function GET(request: NextRequest, response: NextResponse) {

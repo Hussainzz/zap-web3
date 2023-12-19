@@ -2,6 +2,7 @@
   "private": true,
   "scripts": {
     "build": "turbo build",
+    "build:web": "turbo run build --filter=@zap/web",
     "dev": "turbo dev",
     "lint": "turbo lint",
     "clean": "turbo clean",

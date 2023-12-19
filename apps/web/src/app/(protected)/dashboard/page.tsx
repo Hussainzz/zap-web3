@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "auth";
 import { fetchEventStats } from "@/common-api";
 import { getServerSession } from "next-auth/next";
 import { headers } from "next/headers";

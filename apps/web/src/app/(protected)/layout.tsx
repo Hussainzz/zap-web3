@@ -2,7 +2,7 @@ import MainAccountNavbar from "@/components/MainAccount/MainAccountNavbar";
 import MainAccountLayout from "@/components/MainAccount/MainAccountLayout";
 import { getServerSession } from "next-auth/next";
 import { redirect } from "next/navigation";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "auth";
 
 export default async function Layout({
   children,

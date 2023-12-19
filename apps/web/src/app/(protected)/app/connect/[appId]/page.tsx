@@ -1,4 +1,4 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "auth";
 import ConnectApp from "@/components/Apps/ConnectApp";
 import { decryptString } from "@/lib/encrypt";
 import axios from "axios";

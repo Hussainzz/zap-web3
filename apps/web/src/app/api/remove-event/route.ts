@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { User, getServerSession } from "next-auth";
-import { authOptions } from "../auth/[...nextauth]/route";
+import { authOptions } from "auth";
 import HashID from "@/utils/HashID";
 import axios from "axios";
 import { decryptString } from "@/lib/encrypt";
