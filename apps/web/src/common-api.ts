@@ -1,3 +1,6 @@
+/**
+ * @description API to get event count
+ */
 export const fetchEventStats = async (headers: any) => {
   const res = await fetch(`${process.env.ZAP_APP_URL}/api/event/stats`, {
     method: "GET",
