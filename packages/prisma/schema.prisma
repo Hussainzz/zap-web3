@@ -1,0 +1,166 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int       @id @default(autoincrement())
+  fullname  String
+  email     String    @unique
+  password  String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now()) @updatedAt
+  Account   Account[]
+  UserApp   UserApp[]
+  Event     Event[]
+
+  @@map("users")
+}
+
+model Account {
+  id                Int     @id @default(autoincrement())
+  userId            Int
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  exprires_at       Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("account")
+}
+
+model App {
+  id               Int           @id @default(autoincrement())
+  app_name         String?       @db.VarChar(30)
+  app_key          String?       @db.VarChar(30)
+  app_description  String?       @db.VarChar(150)
+  app_auth_url     String?       @db.Text
+  app_auth_payload Json?
+  createdAt        DateTime      @default(now()) @map("createdAt")
+  updatedAt        DateTime      @default(now()) @updatedAt @map("updatedAt")
+  UserApp          UserApp[]
+  AppEndpoint      AppEndpoint[]
+
+  @@map("apps")
+}
+
+model UserApp {
+  id               Int      @id @default(autoincrement())
+  userId           Int
+  appId            Int
+  access_token     String   @db.Text
+  response_payload Json?
+  createdAt        DateTime @default(now()) @map("createdAt")
+  updatedAt        DateTime @default(now()) @updatedAt @map("updatedAt")
+
+  User User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  App  App  @relation(fields: [appId], references: [id], onDelete: Cascade)
+
+  @@map("userApps")
+}
+
+model Contract {
+  id               Int      @id @default(autoincrement())
+  contract_address String?  @db.VarChar(50)
+  chainName        String?  @db.VarChar(20)
+  chainId          Int?
+  abi              Json?
+  createdAt        DateTime @default(now()) @map("createdAt")
+  updatedAt        DateTime @default(now()) @updatedAt @map("updatedAt")
+  Event            Event[]
+
+  @@map("contracts")
+}
+
+model AppEndpoint {
+  id                   Int      @id @default(autoincrement())
+  appId                Int
+  endpoint_key         String?  @db.VarChar(30)
+  endpoint_name        String?  @db.VarChar(30)
+  endpoint_description String?  @db.VarChar(100)
+  endpoint_type        String?  @db.VarChar(10)
+  endpoint_url         String?  @db.Text
+  endpoint_payload     Json
+  createdAt            DateTime @default(now()) @map("createdAt")
+  updatedAt            DateTime @default(now()) @updatedAt @map("updatedAt")
+
+  App        App          @relation(fields: [appId], references: [id])
+  FlowAction FlowAction[]
+
+  @@map("appEndpoints")
+}
+
+model Event {
+  id                Int      @id @default(autoincrement())
+  userId            Int
+  User              User     @relation(fields: [userId], references: [id])
+  event_name        String?
+  event_payload     Json?
+  event_description String?  @db.Text
+  is_active         Int      @default(0) @db.TinyInt
+  contractId        Int
+  Contract          Contract @relation(fields: [contractId], references: [id])
+  createdAt         DateTime @default(now()) @map("createdAt")
+  updatedAt         DateTime @default(now()) @updatedAt @map("updatedAt")
+  Flow              Flow[]
+
+  @@map("events")
+}
+
+model Flow {
+  id               Int             @id @default(autoincrement())
+  eventId          Int
+  Event            Event           @relation(fields: [eventId], references: [id])
+  flow_name        String?         @db.VarChar(50)
+  flow_description String?         @db.Text
+  flowPayload      Json?
+  createdAt        DateTime        @default(now()) @map("createdAt")
+  updatedAt        DateTime        @default(now()) @updatedAt @map("updatedAt")
+  FlowAction       FlowAction[]
+  FlowActionLog    FlowActionLog[]
+
+  @@map("flows")
+}
+
+model FlowAction {
+  id            Int             @id @default(autoincrement())
+  flowId        Int
+  Flow          Flow            @relation(fields: [flowId], references: [id])
+  actionPayload Json?
+  appEndpointId Int
+  AppEndpoint   AppEndpoint     @relation(fields: [appEndpointId], references: [id])
+  createdAt     DateTime        @default(now()) @map("createdAt")
+  updatedAt     DateTime        @default(now()) @updatedAt @map("updatedAt")
+  FlowActionLog FlowActionLog[]
+
+  @@map("flowActions")
+}
+
+model FlowActionLog {
+  id            Int        @id @default(autoincrement())
+  flowId        Int
+  Flow          Flow       @relation(fields: [flowId], references: [id])
+  flowActionId  Int
+  FlowAction    FlowAction @relation(fields: [flowActionId], references: [id])
+  status        String?    @db.VarChar(20)
+  resultPayload Json?
+  createdAt     DateTime   @default(now()) @map("createdAt")
+  updatedAt     DateTime   @default(now()) @updatedAt @map("updatedAt")
+
+  @@map("flowActionLogs")
+}

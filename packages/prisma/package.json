@@ -1,0 +1,20 @@
+{
+    "name": "@zapweb3/prisma",
+    "version": "1.0.0",
+    "main": "./index.ts",
+    "types": "./index.ts",
+    "scripts": {
+        "db-migrate": "yarn prisma migrate dev",
+        "db-deploy": "yarn prisma migrate deploy",
+        "db-seed": "yarn prisma db seed"
+    },
+    "dependencies": {
+        "@prisma/client": "^5.2.0"
+    },
+    "devDependencies": {
+        "prisma": "^5.2.0"
+    },
+    "prisma": {
+        "seed": "ts-node --transpile-only ./seed.ts"
+    }
+}

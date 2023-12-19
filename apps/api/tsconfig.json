@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "lib": ["es6"],
+    "allowJs": true,
+    "outDir": "build",
+    "rootDir": "src",
+    "strict": true,
+    "noImplicitAny": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true
+  },
+  "include": [
+    "src/types/express/index.d.ts", 
+    "src/types/etherscan-api.d.ts",
+    "src/types/global.d.ts",
+    "src/**/__tests__/**/*.ts",
+    ".next/types/**/*.ts"
+  ],
+  "files": ["src/index.ts"]
+}

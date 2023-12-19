@@ -1,0 +1,31 @@
+{
+  "private": true,
+  "scripts": {
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "lint": "turbo lint",
+    "clean": "turbo clean",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "start:web": "cd apps/web && yarn start",
+    "start:api": "cd apps/api && node build/index.js",
+    "start:api:dev": "cd apps/api && yarn run dev"
+  },
+  "devDependencies": {
+    "eslint": "^8.48.0",
+    "prettier": "^3.0.3",
+    "prettier-plugin-tailwindcss": "^0.5.3",
+    "tsconfig": "*",
+    "turbo": "latest"
+  },
+  "packageManager": "yarn@1.22.19",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "prisma": {
+    "schema": "packages/prisma/schema.prisma"
+  },
+  "dependencies": {
+    "dotenv-cli": "^7.3.0"
+  }
+}
