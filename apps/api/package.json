@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "build": "esbuild ./src/index.js --bundle --platform=node --outfile=build/index.js",
-    "dev": "nodemon --exec ts-node --files src/index.ts"
+    "dev": "nodemon --exec ts-node --files src/index.ts",
+    "vercel-build": "esbuild ./src/index.js --bundle --platform=node --outfile=build/index.js"
   },
   "keywords": [],
   "author": "Hussainzz",
