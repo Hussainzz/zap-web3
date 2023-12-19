@@ -53,6 +53,7 @@ export default (sequelize: Sequelize, DataTypes: any) => {
     {
       sequelize,
       modelName: "Flow",
+      tableName: "flows"
     }
   );
   Flow.associate(sequelize.models);

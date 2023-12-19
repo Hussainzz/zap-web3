@@ -42,6 +42,7 @@ export default (sequelize: Sequelize, DataTypes: any) => {
     {
       sequelize,
       modelName: "FlowAction",
+      tableName: "flowActions"
     }
   );
   return FlowAction;

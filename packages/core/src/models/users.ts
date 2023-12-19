@@ -41,6 +41,7 @@ export default (sequelize: Sequelize, DataTypes: any) => {
     {
       sequelize,
       modelName: "User",
+      tableName: "users"
     }
   );
   return User;

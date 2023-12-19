@@ -44,6 +44,7 @@ export default (sequelize: Sequelize, DataTypes: any) => {
     {
       sequelize,
       modelName: "FlowActionLog",
+      tableName: "flowActionLogs"
     }
   );
   return FlowActionLog;

@@ -51,6 +51,7 @@ export default (sequelize: Sequelize, DataTypes: any) => {
   }, {
     sequelize,
     modelName: 'AppEndpoint',
+    tableName: "appEndpoints"
   });
   return AppEndpoint;
 };
