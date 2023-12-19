@@ -24,7 +24,8 @@
     "packages/*"
   ],
   "prisma": {
-    "schema": "packages/prisma/schema.prisma"
+    "schema": "packages/prisma/schema.prisma",
+    "seed": "packages/prisma/seed.ts"
   },
   "dependencies": {
     "dotenv-cli": "^7.3.0"

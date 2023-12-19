@@ -10,6 +10,9 @@
     "vercel-build": "prisma generate && prisma migrate deploy && prisma db push && prisma db seed && next build",
     "prisma:generate": "prisma generate"
   },
+  "prisma": {
+    "seed": "ts-node ../../packages/prisma/seed.ts"
+  },
   "dependencies": {
     "@next-auth/prisma-adapter": "^1.0.7",
     "@radix-ui/react-avatar": "^1.0.3",

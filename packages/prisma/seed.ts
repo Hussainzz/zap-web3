@@ -3,6 +3,7 @@ import { getPrismaClient } from ".";
 const prisma = getPrismaClient();
 
 async function main() {
+
   const appsData = [
     {
       app_name: "Slack",
@@ -18,6 +19,14 @@ async function main() {
       app_description: "Trigger your custom webhook",
     },
   ];
+
+  const appCount = await prisma.app.count({where:{
+    app_key:{
+      in:['slack', 'webhook']
+    }
+  }});
+  if(appCount == 2) return;
+
   const apps = await prisma.$transaction(
     appsData.map((appInfo) => prisma.app.create({ data: appInfo }))
   );
