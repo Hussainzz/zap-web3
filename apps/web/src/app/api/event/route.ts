@@ -54,6 +54,21 @@ export async function POST(request: Request) {
     );
   }
 
+  const eventCount = await prisma.event.count({
+    where: {
+      userId: user.id,
+    },
+  });
+  if(eventCount >= 2 ){
+    return NextResponse.json(
+      {
+        status: "error",
+        message: "Flows Limit Exceeded",
+      },
+      { status: 400 }
+    );
+  }
+
   const { flowName, flowDesc, contractId, contractEvent } = requestBody.data;
 
   const createEventResponse = {

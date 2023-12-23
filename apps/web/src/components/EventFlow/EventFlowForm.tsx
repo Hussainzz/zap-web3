@@ -44,7 +44,7 @@ const EventFlowForm = () => {
       toast.error("Please fill all fields");
       return;
     }
-
+    let errMsg = "Something went wrong";
     setIsLoading(true);
     try {
       const result = await axios.post(`/api/event`, {
@@ -71,10 +71,13 @@ const EventFlowForm = () => {
         return;
       }
     } catch (error: any) {
+      if(error?.response?.data?.message){
+        errMsg = error.response?.data?.message;
+      }
       console.log(error?.message);
     }
     setIsLoading(false);
-    toast.error("Something went wrong");
+    toast.error(errMsg);
   };
 
   // const chooseAppHandler = async (app: UserZapApp) => {
