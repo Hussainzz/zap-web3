@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node build/index.js",
+    "prebuild": "rm -rf build",
     "build": "esbuild ./src/index.js --bundle --platform=node --outfile=build/index.js",
     "dev": "nodemon --exec ts-node --files src/index.ts",
     "vercel-build": "esbuild ./src/index.js --bundle --platform=node --outfile=build/index.js"
