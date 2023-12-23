@@ -1,5 +1,6 @@
 import { authOptions } from "auth";
 import { getServerSession } from "next-auth";
+import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import React from "react";
@@ -18,7 +19,7 @@ async function HeroMain() {
   };
 
   return (
-    <section className="relative py-20 lg:pt-40">
+    <section className="relative py-20">
       <div className="container">
         <div className="h-full items-center gap-4 lg:grid lg:grid-cols-12">
           <div className="flex h-full flex-col items-center justify-center py-10 lg:col-span-5 lg:items-start lg:py-20">
@@ -30,9 +31,10 @@ async function HeroMain() {
             </p>
             <Link
               href="/register"
-              className="rounded-md bg-gold py-3 px-8 text-center font-semibold text-black transition-all hover:bg-gold_1"
+              className="relative rounded px-8 py-2.5 overflow-hidden group bg-gold hover:bg-gradient-to-r hover:from-gold hover:to-green-400 text-zinc hover:ring-2 hover:ring-offset-2 hover:ring-zinc transition-all ease-out duration-300"
             >
-              {heroContent.btnText}
+              <span className="absolute right-0 w-8 h-32 -mt-12 transition-all duration-1000 transform translate-x-12 bg-zinc opacity-10 rotate-12 group-hover:-translate-x-40 ease"></span>
+              <span className="relative font-semibold">{heroContent.btnText}</span>
             </Link>
           </div>
           {/* End flex-col */}
@@ -40,14 +42,14 @@ async function HeroMain() {
           {/* <!-- Hero image --> */}
           <div className="col-span-7">
             <div className="relative text-center">
-              <img src="/hero_n.svg" alt="hero" className="inline-block" />
-              <div className="absolute -top-20 -z-10" style={{
-                top: "-95px !important"
-              }}>
-                <img
-                  src="/3d_elements_crypto_app.png"
-                  alt=""
-                />
+              <Image src="/hero_n.svg" alt="hero" width={598} height={535} className="inline-block" />
+              <div
+                className="absolute -top-20 -z-10"
+                style={{
+                  top: "-95px !important",
+                }}
+              >
+                <Image src="/3d_elements_crypto_app.png" alt="" width={672} height={606} priority={true}/>
               </div>
             </div>
           </div>

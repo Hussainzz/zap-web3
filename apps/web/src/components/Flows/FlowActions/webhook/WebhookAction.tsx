@@ -80,9 +80,12 @@ const WebhookAction = () => {
     let queryParams: {
       [key: string]: string;
     } = getQueryParams();
+
+    const wUrl = new URL(webhookURL);
+    wUrl.search = '';
     const actionPayload = {
       method: webhookMethod,
-      url: webhookURL,
+      url: wUrl.toString(),
       queryParams,
       jsonBody: json,
     };
@@ -124,8 +127,29 @@ const WebhookAction = () => {
                 className={` border w-full rounded-lg py-2  px-2`}
                 autoComplete="off"
                 placeholder="URL"
+                value={webhookURL}
                 onChange={(e) => {
-                  setWebhookURL(e.target.value);
+                  try {
+                    const wUrl = new URL(e.target.value);
+                    const allParams = new URLSearchParams(wUrl.search);
+                    setWebhookURL(e.target.value);
+                    if(allParams.size > 0){
+                      let queryParams: WebhookParamsInterface[] = [];
+                      Array.from(allParams.keys()).forEach((key) => {
+                        if(key.length && allParams.get(key)?.length){
+                          queryParams.push({
+                            key,
+                            val: allParams.get(key)
+                          })
+                        }
+                      });
+                      setParams(prev => {
+                        const prevMap = new Map(prev.map((param) => [param.key, param]));
+                        const filteredParams = queryParams.filter((param) => !prevMap.has(param.key));
+                        return [...prev, ...filteredParams];
+                      });
+                    }
+                  } catch (error) {}
                 }}
               />
             </div>

@@ -66,13 +66,6 @@ const EventFlowBoard = ({ eventFlow }: { eventFlow: UserZapFlowEvent }) => {
   };
 
   useEffect(() => {
-    // //Socket connection to Zap Action Service
-    // const socket = io("http://localhost:8005",{
-    //   withCredentials: true,
-    //   extraHeaders: {
-    //     "zap-socket-key": "abcd"
-    //   }
-    // });
     let actionEventRegister: string[] = [];
 
     if (zapSocket?.connected && eventFlow && eventFlow.FlowAction.length) {
@@ -189,7 +182,7 @@ const EventFlowBoard = ({ eventFlow }: { eventFlow: UserZapFlowEvent }) => {
         }
       }
     };
-  }, [zapSocket, zapDashboardEvents]);
+  }, [zapSocket, zapDashboardEvents, eventFlowAction]);
 
   useEffect(() => {
     return () => {

@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { Form, Formik } from "formik";
 import Link from "next/link";
 import { TextField } from "@/components/Common/TextField";
@@ -7,6 +7,7 @@ import * as Yup from "yup";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import LoadingBtn from "@/components/Common/LoadingBtn";
 
 const validate = Yup.object().shape({
   fullname: Yup.string()
@@ -35,13 +36,16 @@ const initValues: RegisterFormValues = {
 
 const RegistrationForm = () => {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
+
   const registerSubmitHandler = async (values: RegisterFormValues) => {
     try {
       const result = await axios.post("/api/auth/register", values);
       if (result?.status === 201) {
         toast.success("User registration successful");
       }
-      router.push('/login')
+      setLoading(true);
+      router.push('/login');
     } catch (error: any) {
       let errMsg = "Something went wrong";
       if (error?.response?.data?.status === "error") {
@@ -60,7 +64,7 @@ const RegistrationForm = () => {
         onSubmit={registerSubmitHandler}
         enableReinitialize
       >
-        {(formik) => (
+        {({ isSubmitting }) => (
           <Form className="space-y-6">
             <div>
               <TextField
@@ -96,12 +100,16 @@ const RegistrationForm = () => {
             </div>
 
             <div className="flex items-center">
-              <button
-                type="submit"
-                className="bg-gold hover:bg-gold_1 rounded-md py-3 px-8 text-center font-semibold text-black transition-all w-full"
-              >
-                Sign Up
-              </button>
+              {loading ? (
+                <LoadingBtn />
+              ) : (
+                <button
+                  type="submit"
+                  className="bg-gold hover:bg-gold_1 rounded-md py-3 px-8 text-center font-semibold text-black transition-all w-full"
+                >
+                  {isSubmitting ? "Registering..." : "Sign Up"}
+                </button>
+              )}
             </div>
           </Form>
         )}

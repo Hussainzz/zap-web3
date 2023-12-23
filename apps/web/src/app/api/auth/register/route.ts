@@ -51,6 +51,26 @@ export async function POST(request: Request) {
       },
     });
 
+    const webhookApp = await prisma.app.findFirst({where:{app_key:"webhook"}, select:{id: true}});
+    if(webhookApp){
+      const webhookAppUserAppCount = await prisma.userApp.count({
+        where: {
+          userId: user.id,
+          appId: webhookApp.id
+        },
+      });
+      if(!webhookAppUserAppCount){
+        await prisma.userApp.create({
+          data:{
+            userId: user.id,
+            appId: webhookApp.id,
+            access_token: '',
+            response_payload: {}
+          }
+        });
+      }
+    }
+
     return NextResponse.json(
       {
         status: "success",
