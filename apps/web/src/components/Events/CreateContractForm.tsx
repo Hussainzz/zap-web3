@@ -12,6 +12,7 @@ import {
   eventCountState,
 } from "@zap/recoil";
 import LoadingBtn from "@/components/Common/LoadingBtn";
+import toast from "react-hot-toast";
 
 const validate = Yup.object().shape({
   contractAddress: Yup.string().required("Contract address is required"),
@@ -50,12 +51,32 @@ const CreateContractForm = () => {
       formValues?.contractAddress,
       formValues?.chainNetwork
     );
-    setContractEvents({
-      events: events?.data?.events ?? null,
-      contractId: events?.data?.contractId ?? null,
-    });
+    const resultData = events?.data ?? null;
+    if(!resultData) {
+      toast.error('Contract not found / invalid');
+      setIsLoading(false);
+      setContractLoaded(false);
+      setContractEvents(null);
+      return;
+    }
+    const contractEvents = resultData?.events ?? [];
+    const msg = resultData?.message;
+    if(contractEvents?.length <= 0 && msg === 'success') {
+      toast.error('Not events found 🥲');
+      setContractLoaded(false);
+      setContractEvents(null);
+    }else if(msg !== 'success'){
+      toast.error(`${msg} 🥲`);
+      setContractLoaded(false);
+      setContractEvents(null);
+    }else if(contractEvents?.length > 0 && msg === 'success'){
+      setContractEvents({
+        events: contractEvents,
+        contractId: events?.data?.contractId ?? null,
+      });
+      setContractLoaded(true);
+    }
     setIsLoading(false);
-    setContractLoaded(true);
   };
 
   const btnClass =

@@ -7,7 +7,11 @@ const useZapContractAPI = () => {
         `/api/abi/${contractAddress}/${chain}`
       );
       return contractEvents;
-    } catch (error) {}
+    } catch (error: any) {
+      if(error?.response?.data){
+        return {data: error?.response?.data}
+      }
+    }
     return null;
   };
 

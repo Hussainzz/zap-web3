@@ -36,7 +36,7 @@ export const getContractEvents = catchAsync(
     }
 
     const contractRecord = await getContract({
-      where: { contract_address: contractAddress },
+      where: { contract_address: contractAddress, chainName: networkInfo?.network },
     });
     if (contractRecord) {
       contractId = contractRecord?.id ?? null;
@@ -49,7 +49,7 @@ export const getContractEvents = catchAsync(
       const client = axios.create({
         baseURL: etherscanEndpoint,
         timeout: timeout,
-      });
+      }); 
       
       const etherscanClient = etherScanApi.init(
         etherscanApiKey,
@@ -72,7 +72,7 @@ export const getContractEvents = catchAsync(
             contractId = createdEvent?.dataValues?.id ?? null;
             abiEvents = abi.filter((a: any) => a.type === "event");
           }
-        } catch (error) {
+        } catch (error: any) {
           return next(
             new AppError(error || "Something went wrong!", 500, "error")
           );

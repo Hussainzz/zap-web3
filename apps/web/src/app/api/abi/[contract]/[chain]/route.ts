@@ -20,7 +20,8 @@ type ContractEvent = {
 
 interface ContractEventsResponse {
   events : ContractEvent[] | [],
-  contractId: number | null
+  contractId: number | null,
+  message: string
 }
 
 export async function GET(request: NextRequest, {params}:{params: ContractChainParams}) {
@@ -42,9 +43,10 @@ export async function GET(request: NextRequest, {params}:{params: ContractChainP
   const {contract, chain} = params;
   let eventResult:ContractEventsResponse = {
     events: [],
-    contractId: null
+    contractId: null,
+    message: 'Something went wrong'
   }
-
+  let httpStatusCode = 500;
   try {
     const result = await axios.get(`${ABI_API}/${contract?.toLowerCase()}/${chain?.toLowerCase()}`,{
       headers:{
@@ -53,9 +55,16 @@ export async function GET(request: NextRequest, {params}:{params: ContractChainP
     })
     eventResult.events = result?.data?.events ?? [];
     eventResult.contractId = result?.data?.contractId ?? null;
+    eventResult.message = 'success';
+    httpStatusCode = 200;
   } catch (error: any) {
-    console.log(error?.message)
+    const errMessage = error?.response?.data?.message ?? null;
+    if(errMessage){
+      eventResult.message = errMessage;
+    }
   }
 
-  return Response.json(eventResult);
+  return Response.json(eventResult, {
+    status:httpStatusCode
+  });
 }
